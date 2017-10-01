@@ -1,3 +1,5 @@
+package core.beans;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,7 +22,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
+        return "core.beans.Event{" +
                 "id=" + id +
                 ", msg='" + msg + '\'' +
                 ", date=" + dateFormat.format(date) +

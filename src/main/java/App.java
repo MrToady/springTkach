@@ -1,8 +1,8 @@
+import core.beans.Client;
+import core.beans.Event;
+import core.loggers.EventLogger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class App {
     private Client client;
