@@ -1,17 +1,23 @@
 import core.beans.Client;
 import core.beans.Event;
+import core.beans.EventType;
 import core.loggers.EventLogger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Map;
+
 public class App {
     private Client client;
-    private EventLogger eventLogger;
+    private EventLogger defaultLogger;
+    private Map<EventType, EventLogger> loggers;
 
-    public App(Client client, EventLogger eventLogger) {
+
+    public App(Client client, EventLogger defaultLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
-        this.eventLogger = eventLogger;
+        this.defaultLogger = defaultLogger;
+        this.loggers = loggers;
     }
 
     public static void main(String[] args) {
@@ -19,15 +25,24 @@ public class App {
         App app = (App) ctx.getBean("app");
 
         Event event = ctx.getBean(Event.class);
-        app.logEvent(event,"Some event for 1");
+        app.logEvent(EventType.INFO, event, "Some event for 1");
 
         event = ctx.getBean(Event.class);
-        app.logEvent(event,"Some event for 2");
+        app.logEvent(EventType.ERROR, event, "Some event for 2");
+
+        event = ctx.getBean(Event.class);
+        app.logEvent(null, event, "Some event for 3");
+
+        ctx.close();
     }
 
-    private void logEvent(Event event, String msg) {
+    private void logEvent(EventType eventType, Event event, String msg) {
         String message = msg.replace(client.getId(), client.getFullName());
+        EventLogger logger = loggers.get(eventType);
+        if (logger == null) {
+            logger = defaultLogger;
+        }
         event.setMsg(message);
-        eventLogger.logEvent(event);
+        logger.logEvent(event);
     }
 }
