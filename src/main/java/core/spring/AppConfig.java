@@ -1,16 +1,14 @@
 package core.spring;
 
-import java.text.DateFormat;
-import java.util.Date;
-
-import core.loggers.ConsoleEventLogger;
+import core.beans.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import core.beans.Client;
+import java.text.DateFormat;
+import java.util.Date;
 
 @Configuration
 @PropertySource("classpath:client.properties")

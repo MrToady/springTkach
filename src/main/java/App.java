@@ -23,6 +23,8 @@ public class App {
     @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
 
+    public App(){
+    }
 
     public App(Client client, EventLogger defaultLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
@@ -33,7 +35,7 @@ public class App {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(AppConfig.class, LoggerConfig.class);
-        ctx.scan("core");
+        ctx.scan("");
         ctx.refresh();
 
         App app = (App) ctx.getBean("app");
