@@ -2,15 +2,25 @@ import core.beans.Client;
 import core.beans.Event;
 import core.beans.EventType;
 import core.loggers.EventLogger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import core.spring.AppConfig;
+import core.spring.LoggerConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
+@Service
 public class App {
+
+    @Autowired
     private Client client;
+
+    @Resource(name = "defaultLogger")
     private EventLogger defaultLogger;
+
+    @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
 
 
@@ -21,7 +31,11 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.register(AppConfig.class, LoggerConfig.class);
+        ctx.scan("core");
+        ctx.refresh();
+
         App app = (App) ctx.getBean("app");
 
         Event event = ctx.getBean(Event.class);
